@@ -1,0 +1,9 @@
+c:\users\frede\onedrive\dokumenter\visual studio 2017\Projects\WI050917\WI050917\bin\Debug\netcoreapp1.1\WI050917.deps.json
+c:\users\frede\onedrive\dokumenter\visual studio 2017\Projects\WI050917\WI050917\bin\Debug\netcoreapp1.1\WI050917.runtimeconfig.json
+c:\users\frede\onedrive\dokumenter\visual studio 2017\Projects\WI050917\WI050917\bin\Debug\netcoreapp1.1\WI050917.runtimeconfig.dev.json
+c:\users\frede\onedrive\dokumenter\visual studio 2017\Projects\WI050917\WI050917\bin\Debug\netcoreapp1.1\WI050917.dll
+c:\users\frede\onedrive\dokumenter\visual studio 2017\Projects\WI050917\WI050917\bin\Debug\netcoreapp1.1\WI050917.pdb
+c:\users\frede\onedrive\dokumenter\visual studio 2017\Projects\WI050917\WI050917\obj\Debug\netcoreapp1.1\WI050917.csprojResolveAssemblyReference.cache
+c:\users\frede\onedrive\dokumenter\visual studio 2017\Projects\WI050917\WI050917\obj\Debug\netcoreapp1.1\WI050917.AssemblyInfo.cs
+c:\users\frede\onedrive\dokumenter\visual studio 2017\Projects\WI050917\WI050917\obj\Debug\netcoreapp1.1\WI050917.dll
+c:\users\frede\onedrive\dokumenter\visual studio 2017\Projects\WI050917\WI050917\obj\Debug\netcoreapp1.1\WI050917.pdb
