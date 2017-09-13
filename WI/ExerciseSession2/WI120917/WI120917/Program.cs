@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RobotsTxt;
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Threading;
@@ -9,25 +10,37 @@ namespace WI120917
     {
         static void Main(string[] args)
         {
-
-            crawl("http://www.twitch.com");
-
+            Uri url = new Uri("http://www.wikipedia.org");
+            crawl(url);
 
             Console.Read();
 
         }
 
-        static void crawl(string urlSeed)
+        static void crawl(Uri urlSeed)
         {
-            Queue<string> frontier = new Queue<string>();
+            Queue<Uri> frontier = new Queue<Uri>();
             frontier.Enqueue(urlSeed);
 
             var webClient = new WebClient();
 
             while(pages.Count < 1000 && frontier.Count > 0)
             {
-                string url = frontier.Dequeue();
-                string html = webClient.DownloadString(url);
+                Uri url = frontier.Dequeue();
+                if (pages.ContainsKey(url))
+                    continue;
+                string baseUrl = url.Host;
+                string html = "";
+                try
+                {
+                    html = webClient.DownloadString(url);
+                }
+                catch(Exception e)
+                {
+                    Console.WriteLine("Exception: " + e);
+                    continue;
+                }
+                pages.Add(url, html);
 
                 string[] splits = html.Split("<a");
                 for (int i = 1; i < splits.Length; i++)
@@ -37,20 +50,49 @@ namespace WI120917
                     if (!aTag.Contains("href="))
                         continue;
                     
-                    string href = aTag.Split("href=")[1];
-                    if (href.StartsWith('\\'))
+
+                    string[] hrefAndAfter = aTag.Split("href=\"");
+                    string href = "";
+                    if(hrefAndAfter.Length > 1)
+                        href = hrefAndAfter[1].Split("\"")[0];
+                    else
+                    {
+                        hrefAndAfter = aTag.Split("href='");
+                        if(hrefAndAfter.Length > 1)
+                            href = hrefAndAfter[1].Split("'")[0];
+                    }
+                    string extractedUri = "";
+                    if (href.Length == 1)
+                        extractedUri = "http://" + baseUrl;
+                    else if (href.StartsWith("http"))
+                        extractedUri = href;
+                    else if (href.StartsWith("//"))
+                        extractedUri = "http:" + href;
+                    else if (href.StartsWith("/") && !href.Contains("{{"))
+                        extractedUri = "http://" + baseUrl + href;
+                    else
+                    {
+                        Console.WriteLine(href);
                         continue;
-                    
+                    }
+                    Robots robot;
+                    if(!robotTxts.TryGetValue(baseUrl, out robot))
+                    {
+                        robot = new Robots("http://" + baseUrl + "/robots.txt");
+                    }
 
-                    string éxtractedUrl = splits[i].Split('"')[1];
+                    if (!robot.IsPathAllowed("sw701crawlftwplz", extractedUri))
+                        continue;
+
+                    if (!frontier.Contains( new Uri(extractedUri)))
+                        frontier.Enqueue( new Uri(extractedUri));
                 }
-
-
-                Thread.Sleep(3000);
+                Thread.Sleep(100);
+                Console.WriteLine("Pages: " + pages.Count);
             }
-
+            Console.WriteLine(pages.Keys);
         }
-
+        /*
         static public List<string> getRestrictions(string baseUrl)
         {
             List<string> result;
@@ -59,7 +101,7 @@ namespace WI120917
                 return result;
             }
             result = new List<string>();
-            var robotTxt = new WebClient().DownloadString(baseUrl + "/robots.txt");
+            var robotTxt = new WebClient().DownloadString("http://" + baseUrl + "/robots.txt");
 
             var robotTxtLines = robotTxt.Split('\n');
 
@@ -94,10 +136,10 @@ namespace WI120917
             }
             robotTxts.Add(baseUrl, result);
             return result;
-        }
+        }*/
 
-        static Dictionary<string, List<string>> robotTxts = new Dictionary<string, List<string>>();
+        static Dictionary<string, Robots> robotTxts = new Dictionary<string, Robots>();
 
-        static Dictionary<string, string> pages = new Dictionary<string, string>();
+        static Dictionary<Uri, string> pages = new Dictionary<Uri, string>();
     }
 }
