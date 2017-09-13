@@ -87,7 +87,7 @@ namespace WI050917
 
         public int[] hashMin()
         {
-            int[] min = new int[] { int.MaxValue, int.MaxValue, int.MaxValue };
+            int[] min = new int[] { int.MaxValue, int.MaxValue, int.MaxValue, int.MaxValue };
             var algrorithm = SHA512.Create();
             foreach (Shingle shingle in shingles)
             {
@@ -108,6 +108,17 @@ namespace WI050917
                 hashBytes = algrorithm.ComputeHash(Encoding.UTF8.GetBytes(shingle3.ToString()));
                 localmin = BitConverter.ToInt32(hashBytes, 0);
                 min[2] = min[2] < localmin ? min[2] : localmin;
+
+                List<string> shingleWords = shingle.words;
+                string firstWord = shingleWords[0];
+                string thirdWord = shingleWords[2];
+                shingleWords[0] = thirdWord;
+                shingleWords[2] = firstWord;
+                Shingle shingle4 = new Shingle(shingleWords);
+                Console.WriteLine(shingle4.ToString());
+                hashBytes = algrorithm.ComputeHash(Encoding.UTF8.GetBytes(shingle4.ToString()));
+                localmin = BitConverter.ToInt32(hashBytes, 0);
+                min[3] = min[3] < localmin ? min[3] : localmin;
             }
             
             return min;

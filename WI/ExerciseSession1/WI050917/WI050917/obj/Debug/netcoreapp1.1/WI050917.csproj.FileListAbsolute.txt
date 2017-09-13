@@ -7,3 +7,12 @@ c:\users\frede\onedrive\dokumenter\visual studio 2017\Projects\WI050917\WI050917
 c:\users\frede\onedrive\dokumenter\visual studio 2017\Projects\WI050917\WI050917\obj\Debug\netcoreapp1.1\WI050917.AssemblyInfo.cs
 c:\users\frede\onedrive\dokumenter\visual studio 2017\Projects\WI050917\WI050917\obj\Debug\netcoreapp1.1\WI050917.dll
 c:\users\frede\onedrive\dokumenter\visual studio 2017\Projects\WI050917\WI050917\obj\Debug\netcoreapp1.1\WI050917.pdb
+C:\Users\Christian\Documents\GitHub\P7\WI\ExerciseSession1\WI050917\WI050917\bin\Debug\netcoreapp1.1\WI050917.deps.json
+C:\Users\Christian\Documents\GitHub\P7\WI\ExerciseSession1\WI050917\WI050917\bin\Debug\netcoreapp1.1\WI050917.runtimeconfig.json
+C:\Users\Christian\Documents\GitHub\P7\WI\ExerciseSession1\WI050917\WI050917\bin\Debug\netcoreapp1.1\WI050917.runtimeconfig.dev.json
+C:\Users\Christian\Documents\GitHub\P7\WI\ExerciseSession1\WI050917\WI050917\bin\Debug\netcoreapp1.1\WI050917.dll
+C:\Users\Christian\Documents\GitHub\P7\WI\ExerciseSession1\WI050917\WI050917\bin\Debug\netcoreapp1.1\WI050917.pdb
+C:\Users\Christian\Documents\GitHub\P7\WI\ExerciseSession1\WI050917\WI050917\obj\Debug\netcoreapp1.1\WI050917.AssemblyInfo.cs
+C:\Users\Christian\Documents\GitHub\P7\WI\ExerciseSession1\WI050917\WI050917\obj\Debug\netcoreapp1.1\WI050917.dll
+C:\Users\Christian\Documents\GitHub\P7\WI\ExerciseSession1\WI050917\WI050917\obj\Debug\netcoreapp1.1\WI050917.pdb
+C:\Users\Christian\Documents\GitHub\P7\WI\ExerciseSession1\WI050917\WI050917\obj\Debug\netcoreapp1.1\WI050917.csprojResolveAssemblyReference.cache
