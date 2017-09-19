@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Threading;
+using System.IO;
 
 namespace WI120917
 {
@@ -24,6 +25,8 @@ namespace WI120917
 
             var webClient = new WebClient();
 
+
+            int fileNameNumber = 1;
             while(pages.Count < 1000 && frontier.Count > 0)
             {
                 Uri url = frontier.Dequeue();
@@ -34,6 +37,8 @@ namespace WI120917
                 try
                 {
                     html = webClient.DownloadString(url);
+                    string directory = AppDomain.CurrentDomain.BaseDirectory + @"\docs\doc" + fileNameNumber + ".html";
+                    webClient.DownloadFile(url, directory);
                 }
                 catch(Exception e)
                 {
@@ -89,8 +94,10 @@ namespace WI120917
                 }
                 Thread.Sleep(100);
                 Console.WriteLine("Pages: " + pages.Count);
+                fileNameNumber++;
             }
             Console.WriteLine(pages.Keys);
+
         }
         /*
         static public List<string> getRestrictions(string baseUrl)
