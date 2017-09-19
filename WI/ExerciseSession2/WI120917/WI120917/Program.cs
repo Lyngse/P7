@@ -32,7 +32,16 @@ namespace WI120917
                 Uri url = frontier.Dequeue();
                 if (pages.ContainsKey(url))
                     continue;
-                string baseUrl = url.Host;
+                string baseUrl = "";
+                try
+                {
+                    baseUrl = url.Host;
+                }
+                catch(Exception e)
+                {
+                    Console.WriteLine("Bad url: {0}", url);
+                    continue;
+                }
                 string html = "";
                 try
                 {
@@ -77,7 +86,7 @@ namespace WI120917
                         extractedUri = "http://" + baseUrl + href;
                     else
                     {
-                        Console.WriteLine(href);
+                        //Console.WriteLine(href);
                         continue;
                     }
                     Robots robot;
@@ -90,7 +99,10 @@ namespace WI120917
                         continue;
 
                     if (!frontier.Contains( new Uri(extractedUri)))
-                        frontier.Enqueue( new Uri(extractedUri));
+                    {
+                        if(extractedUri.Contains("en.wikipedia"))
+                            frontier.Enqueue(new Uri(extractedUri));
+                    }
                 }
                 Thread.Sleep(100);
                 Console.WriteLine("Pages: " + pages.Count);
