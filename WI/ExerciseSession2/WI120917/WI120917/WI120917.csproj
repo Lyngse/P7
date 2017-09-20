@@ -6,7 +6,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="HtmlAgilityPack" Version="1.5.5" />
     <PackageReference Include="RobotsTxt" Version="2014.2.19" />
+    <PackageReference Include="Shaman.Stemming" Version="1.0.1.3" />
   </ItemGroup>
 
   <ItemGroup>
