@@ -8,8 +8,10 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
 using HtmlAgilityPack;
+using Newtonsoft.Json;
 using SF.Snowball;
 using SF.Snowball.Ext;
+using ShellProgressBar;
 
 namespace WI120917
 {
@@ -28,7 +30,17 @@ namespace WI120917
 
 
             //crawl(url);
-            Indexing(); 
+
+            string paths = AppDomain.CurrentDomain.BaseDirectory+"index.txt";
+
+            if (!File.Exists(paths))
+            {
+                Indexing();
+            }
+            else
+            {
+                index = ReadFromJsonFile<Dictionary<string, Dictionary<int, List<int>>>>(paths);
+            }
 
             Console.Read();
 
@@ -39,62 +51,107 @@ namespace WI120917
             List<string> paths = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory + @"\docs\").ToList();
             List<string> stopWords = File.ReadAllText(@"StopWords.txt").Split("\r\n").ToList();
 
-            foreach (var path in paths)
+            int pathCount = 1;
+            using (var pbar = new ProgressBar(paths.Count / 10, "Starting", ConsoleColor.Cyan))
             {
-                int fileID = int.Parse(path.Split("doc").Last().Replace(".html", ""));
-                List<string> tokens = Tokenizer(File.ReadAllText(path));
-                int tokenPosition = 0;
 
-                foreach (var stopWord in stopWords)
+
+                foreach (var path in paths)
                 {
-                    tokens.RemoveAll(x => x.Equals(stopWord));
+                    int fileID = int.Parse(path.Split("doc").Last().Replace(".html", ""));
+                    List<string> tokens = Tokenizer(File.ReadAllText(path));
+                    int tokenPosition = 0;
 
-                }
-
-                var stemmer = new EnglishStemmer();
-                for (int i = 0; i < tokens.Count; i++)
-                {
-                    stemmer.SetCurrent(tokens[i]);
-                    if (stemmer.Stem())
+                    foreach (var stopWord in stopWords)
                     {
-                        tokens[i] = stemmer.GetCurrent();
+                        tokens.RemoveAll(x => x.Equals(stopWord));
+
                     }
-                }
 
-                foreach (var token in tokens)
-                {
-                    if (index.ContainsKey(token))
+                    var stemmer = new EnglishStemmer();
+                    for (int i = 0; i < tokens.Count; i++)
                     {
-                        if (index[token].ContainsKey(fileID))
+                        stemmer.SetCurrent(tokens[i]);
+                        if (stemmer.Stem())
                         {
-                            index[token][fileID].Add(tokenPosition);
+                            tokens[i] = stemmer.GetCurrent();
+                        }
+                    }
 
+                    foreach (var token in tokens)
+                    {
+                        if (index.ContainsKey(token))
+                        {
+                            if (index[token].ContainsKey(fileID))
+                            {
+                                index[token][fileID].Add(tokenPosition);
+
+                            }
+
+                            else
+                            {
+                                var newIndex = new List<int>();
+                                newIndex.Add(tokenPosition);
+                                index[token].Add(fileID, newIndex);
+                            }
                         }
 
                         else
                         {
                             var newIndex = new List<int>();
                             newIndex.Add(tokenPosition);
-                            index[token].Add(fileID, newIndex);
+                            var newDictionary = new Dictionary<int, List<int>>();
+                            newDictionary.Add(fileID, newIndex);
+                            index.Add(token, newDictionary);
                         }
-                    }
 
-                    else
+                        tokenPosition++;
+                    }
+                    if (pathCount % 10 == 0)
                     {
-                        var newIndex = new List<int>();
-                        newIndex.Add(tokenPosition);
-                        var newDictionary = new Dictionary<int, List<int>>();
-                        newDictionary.Add(fileID,newIndex);
-                        index.Add(token, newDictionary);
+                        pbar.Tick("Currently processing " + pathCount);
                     }
-                    
-                    tokenPosition++;
-                }
+                    pathCount++;
 
+                }
             }
+            WriteToJsonFile<Dictionary<string, Dictionary<int, List<int>>>> (AppDomain.CurrentDomain.BaseDirectory + "index.txt", index);
+            
 
         }
 
+
+        public static void WriteToJsonFile<T>(string filePath, T objectToWrite, bool append = false) where T : new()
+        {
+            TextWriter writer = null;
+            try
+            {
+                var contentsToWriteToFile = JsonConvert.SerializeObject(objectToWrite);
+                writer = new StreamWriter(filePath, append);
+                writer.Write(contentsToWriteToFile);
+            }
+            finally
+            {
+                if (writer != null)
+                    writer.Close();
+            }
+        }
+
+        public static T ReadFromJsonFile<T>(string filePath) where T : new()
+        {
+            TextReader reader = null;
+            try
+            {
+                reader = new StreamReader(filePath);
+                var fileContents = reader.ReadToEnd();
+                return JsonConvert.DeserializeObject<T>(fileContents);
+            }
+            finally
+            {
+                if (reader != null)
+                    reader.Close();
+            }
+        }
 
 
         static List<string> Tokenizer(string htmlPage)
