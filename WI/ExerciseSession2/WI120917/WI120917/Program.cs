@@ -28,10 +28,74 @@ namespace WI120917
 
 
             //crawl(url);
-            Indexing(); 
+            Indexing();
+            BooleanSearch("sloterdijk temple");
+            //Rank();
 
             Console.Read();
 
+        }
+
+        static void Rank()
+        {
+
+        }
+
+        static Dictionary<int, List<string>> BooleanSearch(string query)
+        {
+            Dictionary<int, List<string>> res = new Dictionary<int, List<string>>();            
+
+            string[] queryWords = query.Split(" ");
+
+            var stemmer = new EnglishStemmer();
+            for (int i = 0; i < queryWords.Length; i++)
+            {
+                stemmer.SetCurrent(queryWords[i]);
+                if (stemmer.Stem())
+                {
+                    queryWords[i] = stemmer.GetCurrent();
+                }
+            }
+
+            foreach (var word in queryWords)
+            {
+                if (index.ContainsKey(word))
+                {
+
+                    foreach (var key in index[word].Keys)
+                    {
+                        if (!res.ContainsKey(key))
+                        {
+                            List<string> words = new List<string>();
+                            words.Add(word);
+                            res.Add(key, words);
+                        } else
+                        {
+                            res[key].Add(word);
+                        }
+                    }
+                }
+            }
+
+            Dictionary<int, List<string>> tempRes = new Dictionary<int, List<string>>();
+
+            foreach (var key in res.Keys)
+            {
+                int matches = 0;
+                for(int i = 0; i < queryWords.Length; i++)
+                {
+                    if (res[key].Contains(queryWords[i]))
+                    {
+                        matches++;
+                    }
+                }
+                if(matches == queryWords.Length)
+                {
+                    tempRes.Add(key, res[key]);
+                }
+            }
+
+            return tempRes;
         }
 
         static void Indexing()
@@ -92,7 +156,7 @@ namespace WI120917
                 }
 
             }
-
+            Console.WriteLine("Indexing has finished.");
         }
 
 
