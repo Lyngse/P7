@@ -35,11 +35,13 @@ namespace WI120917
 
             if (!File.Exists(paths))
             {
+                Console.WriteLine("Starting indexing of local files");
                 Indexing();
             }
             else
             {
                 index = ReadFromJsonFile<Dictionary<string, Dictionary<int, List<int>>>>(paths);
+                Console.WriteLine("Index was successfully loaded from file");
             }
 
             BooleanSearch("sloterdijk temple");
@@ -180,7 +182,7 @@ namespace WI120917
 
                 }
             }
-            WriteToJsonFile<Dictionary<string, Dictionary<int, List<int>>>> (AppDomain.CurrentDomain.BaseDirectory + "index.txt", index);
+            WriteToJsonFile(AppDomain.CurrentDomain.BaseDirectory + "index.txt", index);
             
 
             Console.WriteLine("Indexing has finished.");
@@ -260,7 +262,7 @@ namespace WI120917
                 {
                     baseUrl = url.Host;
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     Console.WriteLine("Bad url: {0}", url);
                     continue;
