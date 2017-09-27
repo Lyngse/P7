@@ -29,7 +29,7 @@ namespace WI120917
             Uri url = new Uri("http://www.wikipedia.org");
 
 
-            //crawl(url);
+            //Crawl(url);
 
             string paths = AppDomain.CurrentDomain.BaseDirectory+"index.txt";
 
@@ -44,16 +44,107 @@ namespace WI120917
                 Console.WriteLine("Index was successfully loaded from file");
             }
 
-            BooleanSearch("sloterdijk temple");
+            RankSearch("sloterdijk temple temple temple temple temple temple");
+            //BooleanSearch("sloterdijk temple");
             //Rank();
 
             Console.Read();
 
         }
 
-        static void Rank()
+        static void RankSearch(string query)
         {
+            List<string> files = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory + @"\docs\").ToList();
+            int docCount = files.Count;
+            List<int> documentIds = new List<int>();
+            foreach (var file in files)
+            {
+                int fileID = int.Parse(file.Split("doc").Last().Replace(".html", ""));
+                documentIds.Add(fileID);
+            }
 
+            string[] queryWords = query.Split(" ");
+            queryWords = StringStemmer(queryWords);
+            List<double> queryVector = new List<double>();
+            Dictionary<int, double> results = new Dictionary<int, double>();
+            Dictionary<string, int> termFrequency = new Dictionary<string, int>();
+
+            foreach (var qw in queryWords)
+            {
+                if(!termFrequency.ContainsKey(qw))
+                {
+                    termFrequency.Add(qw, 1);
+                }
+                else
+                {
+                    termFrequency[qw]++;
+                }
+            }
+
+            foreach (var tf in termFrequency)
+            {
+                if (!index.ContainsKey(tf.Key))
+                {
+                    queryVector.Add(0);
+                    continue;
+                }
+
+                double weightedTermFrequency = 1 + Math.Log10(tf.Value);
+                int docFrequency = index[tf.Key].Count;
+                double iDocFrequency = Math.Log10(docCount / docFrequency);
+                double wt = weightedTermFrequency * iDocFrequency;
+
+                queryVector.Add(wt);
+            }
+            double queryVectorLength = Math.Sqrt(queryVector.Sum(wt => wt = Math.Pow(wt, 2) ));
+            for (int i = 0; i < queryVector.Count; i++)
+            {
+                queryVector[i] /= queryVectorLength;
+            }
+
+            foreach (var id in documentIds)
+            {
+                List<double> documentVector = new List<double>();
+
+                foreach (var term in termFrequency)
+                {
+                    if(index.ContainsKey(term.Key))
+                    {
+                        if(index[term.Key].ContainsKey(id))
+                        {
+                            documentVector.Add(1 + Math.Log10(index[term.Key][id].Count));
+                        }
+                        else
+                        {
+                            documentVector.Add(0);
+                        }
+                    }
+                    else
+                    {
+                        documentVector.Add(0);
+                    }
+                }
+                double documentVectorLength = Math.Sqrt(documentVector.Sum(wt => wt = Math.Pow(wt, 2)));
+                if (documentVectorLength != 0.0)
+                {
+                    for (int i = 0; i < documentVector.Count; i++)
+                    {
+                        documentVector[i] /= documentVectorLength;
+                    }
+                }
+
+                double documentScore = 0;
+
+                for (int i = 0; i < documentVector.Count; i++)
+                {
+                    documentScore += documentVector[i] * queryVector[i];
+                }
+                results.Add(id, documentScore);
+            }
+            Console.WriteLine("Are we done yet? no");
+
+            var sortedResults = results.OrderByDescending(x => x.Value);
+            sortedResults.Take(10).ToList().ForEach(x => Console.WriteLine(x.Key + " - " + x.Value));
         }
 
         static Dictionary<int, List<string>> BooleanSearch(string query)
@@ -62,21 +153,12 @@ namespace WI120917
 
             string[] queryWords = query.Split(" ");
 
-            var stemmer = new EnglishStemmer();
-            for (int i = 0; i < queryWords.Length; i++)
-            {
-                stemmer.SetCurrent(queryWords[i]);
-                if (stemmer.Stem())
-                {
-                    queryWords[i] = stemmer.GetCurrent();
-                }
-            }
+            queryWords = StringStemmer(queryWords);
 
             foreach (var word in queryWords)
             {
                 if (index.ContainsKey(word))
                 {
-
                     foreach (var key in index[word].Keys)
                     {
                         if (!res.ContainsKey(key))
@@ -243,7 +325,7 @@ namespace WI120917
             return tagCleanedText.Split(" ").ToList();
         }
 
-        static void crawl(Uri urlSeed)
+        static void Crawl(Uri urlSeed)
         {
             Queue<Uri> frontier = new Queue<Uri>();
             frontier.Enqueue(urlSeed);
@@ -381,5 +463,19 @@ namespace WI120917
             robotTxts.Add(baseUrl, result);
             return result;
         }*/
+        static string[] StringStemmer(string[] stringArray)
+        {
+            var stemmer = new EnglishStemmer();
+            for (int i = 0; i < stringArray.Length; i++)
+            {
+                stemmer.SetCurrent(stringArray[i]);
+                if (stemmer.Stem())
+                {
+                    stringArray[i] = stemmer.GetCurrent();
+                }
+            }
+
+            return stringArray;
+        }
     }
 }
