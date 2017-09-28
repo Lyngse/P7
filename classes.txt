@@ -1,0 +1,53 @@
+boardGameObject{
+  Transform: {
+    posX,
+    posY,
+    posZ,
+    rotX,
+    rotY,
+    rotZ,
+    scaleX,
+    scaleY,
+    scaleZ,
+  },
+  Nickname,
+  Description,
+  Locked
+}
+
+Dice: boardGameObject{
+  imgUrl,
+  type (6 typer: [0:d4, 1:d6, 2:d8, 3:d10, 4:d12, 5:d20])
+}
+
+Deck: boardGameObject{
+  cards: Card[]
+}
+
+Card: boardGameObject{
+  deckImage: DeckImage,
+  CardNumber
+}
+
+DeckImage {
+  imgUrl,
+  numWidth,
+  numHeight
+}
+
+
+Token/Tile: boardGameObject{
+  imgUrl,
+  thickness,
+  type (4 typer: [0:box, 1:Hex, 2:circle, 3:mat(rounded corners)])
+}
+    
+Bag: boardGameObject{
+  infinite,
+  containedObjects: boardGameObject[]
+}
+
+model: boardGameObject{
+  meshUrl,
+  diffuseUrl
+}
