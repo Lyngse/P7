@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TurnCubeDebug : MonoBehaviour
-{
+public class TurnCubeDebugger : MonoBehaviour {
+
     int counter;
     int[] sides = { 0, 0, 0, 0, 0, 0 };
 

@@ -53,7 +53,7 @@
   <ItemGroup>
      <Compile Include="Assets\scripts\GrabObject.cs" />
      <Compile Include="Assets\scripts\TurnCube.cs" />
-     <Compile Include="Assets\scripts\TurnCudeDebug.cs" />
+     <Compile Include="Assets\scripts\TurnCubeDebugger.cs" />
      <Compile Include="Assets\scripts\UVTest.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
