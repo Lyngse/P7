@@ -7,27 +7,28 @@ public class UVTest : MonoBehaviour {
 
     void Start()
     {
-        float size = 1f;
+        float plus = 0.5f;
+        float minus = -0.5f;
         Vector3[] vertices = {
-            new Vector3(0, size, 0),
-            new Vector3(0, 0, 0),
-            new Vector3(size, size, 0),
-            new Vector3(size, 0, 0),
+            new Vector3(minus, plus, minus),
+            new Vector3(minus, minus, minus),
+            new Vector3(plus, plus, minus),
+            new Vector3(plus, minus, minus),
 
-            new Vector3(0, 0, size),
-            new Vector3(size, 0, size),
-            new Vector3(0, size, size),
-            new Vector3(size, size, size),
+            new Vector3(minus, minus, plus),
+            new Vector3(plus, minus, plus),
+            new Vector3(minus, plus, plus),
+            new Vector3(plus, plus, plus),
 
-            new Vector3(size, 0, 0),
-            new Vector3(size, 0, size),
-            new Vector3(size, size, 0),
-            new Vector3(size, size, size),
+            new Vector3(plus, minus, minus),
+            new Vector3(plus, minus, plus),
+            new Vector3(plus, plus, minus),
+            new Vector3(plus, plus, plus),
 
-            new Vector3(0, size, 0),
-            new Vector3(0, size, size),
-            new Vector3(0, 0, 0),
-            new Vector3(0, 0, size),
+            new Vector3(minus, plus, minus),
+            new Vector3(minus, plus, plus),
+            new Vector3(minus, minus, minus),
+            new Vector3(minus, minus, plus),
         };
 
         int[] triangles = {
@@ -75,8 +76,5 @@ public class UVTest : MonoBehaviour {
         mesh.triangles = triangles;
         mesh.uv = uvs;
         mesh.RecalculateNormals();
-        transform.Translate(new Vector3(-0.5f, -0.5f, -0.5f));
-        var boxCollider = GetComponent<BoxCollider>();
-        boxCollider.center = new Vector3(0.5f, 0.5f, 0.5f);
     }
 }
