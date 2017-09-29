@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TurnCube : MonoBehaviour
+public class TurnCubeDebug : MonoBehaviour
 {
     int counter;
     int[] sides = { 0, 0, 0, 0, 0, 0 };
