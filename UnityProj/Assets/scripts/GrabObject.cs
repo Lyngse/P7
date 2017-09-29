@@ -7,6 +7,17 @@ public class GrabObject : MonoBehaviour {
     private Vector3 offset;
     private Transform objectTransform;
     private Plane dragPlane = new Plane(Vector3.up, new Vector3(0, 3, 0));
+    private Rigidbody thisBody;
+
+    private void Start()
+    {
+        thisBody = GetComponent<Rigidbody>();
+    }
+
+    private void OnMouseDown()
+    {
+        thisBody.useGravity = false;
+    }
 
     void OnMouseDrag()
     {
@@ -14,5 +25,11 @@ public class GrabObject : MonoBehaviour {
         float enter = 0;
         dragPlane.Raycast(ray, out enter);
         transform.position = ray.GetPoint(enter);
+        
+    }
+
+    private void OnMouseUp()
+    {
+        thisBody.useGravity = true;
     }
 }
