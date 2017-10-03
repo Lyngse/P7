@@ -91,7 +91,7 @@ namespace WI120917
 
                 double weightedTermFrequency = 1 + Math.Log10(tf.Value);
                 int docFrequency = index[tf.Key].Count;
-                double iDocFrequency = Math.Log10(docCount / docFrequency);
+                double iDocFrequency = Math.Log10(docCount / (double)docFrequency);
                 double wt = weightedTermFrequency * iDocFrequency;
 
                 queryVector.Add(wt);
