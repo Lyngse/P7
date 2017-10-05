@@ -20,13 +20,13 @@ namespace WI120917
             this._urlSeed = urlSeed;
         }
 
-        public void Crawl()
+        public List<Webpage> Crawl()
         {            
             frontier.Enqueue(this._urlSeed);
 
             int fileNameNumber = 1;            
 
-            while(pages.Count < 1000 && frontier.Count > 0)
+            while(pages.Count < 50 && frontier.Count > 0)
             {
                 Uri url = frontier.Dequeue();
                 Webpage currentPage = new Webpage(fileNameNumber, _urlSeed);
@@ -77,7 +77,7 @@ namespace WI120917
                 Console.WriteLine("Pages: " + pages.Count);
                 fileNameNumber++;
             }
-
+            return pages;
         }
 
         List<Uri> ExtractLinks(Uri extractSeed)
