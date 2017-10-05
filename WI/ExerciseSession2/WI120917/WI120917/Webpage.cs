@@ -8,7 +8,7 @@ namespace WI120917
     {
         private int _id;
         public Uri uri;
-        private Dictionary<string, int> _tokenList;
+        private Dictionary<string, int> _tokenList = new Dictionary<string, int>();
         public string htmlContent;
 
         public Webpage(int id, Uri Uri)

@@ -11,7 +11,7 @@ namespace WI120917
     {
         private Uri _urlSeed;
         private WebClient _webClient = new WebClient();
-        private List<Webpage> pages = new List<Webpage>();
+        public List<Webpage> pages = new List<Webpage>();
         private Queue<Uri> frontier = new Queue<Uri>();
         private Dictionary<string, Robots> robotTxts = new Dictionary<string, Robots>();
 
@@ -20,13 +20,13 @@ namespace WI120917
             this._urlSeed = urlSeed;
         }
 
-        public void Crawl()
+        public List<Webpage> Crawl()
         {            
             frontier.Enqueue(this._urlSeed);
 
             int fileNameNumber = 1;            
 
-            while(pages.Count < 1000 && frontier.Count > 0)
+            while(pages.Count < 50 && frontier.Count > 0)
             {
                 Uri url = frontier.Dequeue();
                 Webpage currentPage = new Webpage(fileNameNumber, _urlSeed);
@@ -74,7 +74,7 @@ namespace WI120917
                 Console.WriteLine("Pages: " + pages.Count);
                 fileNameNumber++;
             }
-
+            return pages;
         }
 
         List<Uri> ExtractLinks(Uri extractSeed)
