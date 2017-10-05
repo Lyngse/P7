@@ -26,7 +26,7 @@ namespace WI120917
 
         static void Main(string[] args)
         {
-            /*Uri url = new Uri("http://www.wikipedia.org");
+            Uri url = new Uri("http://www.wikipedia.org");
 
 
             //Crawl(url);
@@ -44,15 +44,16 @@ namespace WI120917
                 Console.WriteLine("Index was successfully loaded from file");
             }
 
-            RankSearch("sloterdijk temple temple temple temple temple temple");
+            //RankSearch("sloterdijk temple temple temple temple temple temple");
             //BooleanSearch("sloterdijk temple");
             //Rank();
 
-            Console.Read();*/
+            //Console.Read();
 
-            Crawler crawler = new Crawler(new Uri("http://en.wikipedia.org"));
-            crawler.Crawl();
-            Console.ReadLine();
+            //Crawler crawler = new Crawler(new Uri("http://en.wikipedia.org"));
+            //crawler.Crawl();
+            PageRanker pageRanker = new PageRanker();
+            Console.Read();
 
         }
 

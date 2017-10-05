@@ -7,6 +7,7 @@
 
   <ItemGroup>
     <PackageReference Include="HtmlAgilityPack" Version="1.5.5" />
+    <PackageReference Include="MathNet.Numerics" Version="3.20.0" />
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
     <PackageReference Include="RobotsTxt" Version="2014.2.19" />
     <PackageReference Include="Shaman.Stemming" Version="1.0.1.3" />

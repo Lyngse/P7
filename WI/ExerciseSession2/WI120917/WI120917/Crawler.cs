@@ -11,7 +11,7 @@ namespace WI120917
     {
         private Uri _urlSeed;
         private WebClient _webClient = new WebClient();
-        private List<Webpage> pages = new List<Webpage>();
+        public List<Webpage> pages = new List<Webpage>();
         private Queue<Uri> frontier = new Queue<Uri>();
         private Dictionary<string, Robots> robotTxts = new Dictionary<string, Robots>();
 
@@ -48,9 +48,12 @@ namespace WI120917
                     continue;
                 }
 
-                pages.Add(currentPage);
-
                 List<Uri> pageLinks = ExtractLinks(currentPage.uri);
+
+                currentPage.htmlLinks = pageLinks;
+
+                pages.Add(currentPage);
+                
 
                 Robots robot;
 
@@ -122,6 +125,7 @@ namespace WI120917
                             Console.WriteLine("Could not parse: " + attribute.Value);
                         }
                     }
+
                 }
             }
             catch (Exception e)

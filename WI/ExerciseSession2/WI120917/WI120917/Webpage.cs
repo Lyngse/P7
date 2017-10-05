@@ -10,6 +10,9 @@ namespace WI120917
         public Uri uri;
         private Dictionary<string, int> _tokenList;
         public string htmlContent;
+        public List<Uri> htmlLinks = new List<Uri>();
+
+        public int Id { get => _id; }
 
         public Webpage(int id, Uri Uri)
         {
@@ -26,6 +29,7 @@ namespace WI120917
             return false;
         }
 
+
         public void AddToTokenList(string token)
         {
             if (this._tokenList.ContainsKey(token))
@@ -35,6 +39,19 @@ namespace WI120917
             {
                 this._tokenList.Add(token, 1);
             }
+        }
+
+        public List<int> InitLinks(List<Webpage> pages)
+        {
+            List<int> result = new List<int>();
+            foreach (var page in pages)
+            {
+                if(htmlLinks.Exists(x => x == page.uri))
+                {
+                    result.Add(page.Id);
+                }
+            }
+            return result;
         }
     }
 }
