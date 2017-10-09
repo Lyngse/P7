@@ -12,6 +12,7 @@ using Newtonsoft.Json;
 using SF.Snowball;
 using SF.Snowball.Ext;
 using ShellProgressBar;
+using MathNet.Numerics.LinearAlgebra.Double;
 
 namespace WI120917
 {
@@ -55,7 +56,16 @@ namespace WI120917
 
             //Crawler crawler = new Crawler(new Uri("http://en.wikipedia.org"));
             //crawler.Crawl();
-            PageRanker pageRanker = new PageRanker();
+            PageRanker pageRanker = new PageRanker(pages);
+            DenseVector pageRank = pageRanker.GeneratePageRank(10);
+            Console.WriteLine(pageRank.Count);
+
+            for (int i = 0; i < pageRank.Count; i++)
+            {
+                pages[i].pageRank = pageRank[i] * 1000;
+                Console.WriteLine(pages[i].pageRank);
+            }
+
             Console.Read();
 
         }

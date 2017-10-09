@@ -7,7 +7,7 @@ using SF.Snowball.Ext;
 
 namespace WI120917
 {
-    class Rater
+    class RankSearch
     {
         //public void RankSearch(string query)
         //{

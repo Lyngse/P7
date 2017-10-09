@@ -48,7 +48,6 @@ namespace WI120917
                 var pageRank = ((1 - randomProbability) * TransitionProbabilityMatrix) + (randomProbability * TransitionRandomMatrix);
                 resultVector = (DenseVector)(resultVector * pageRank);
             }
-
             return resultVector;
         }
     }
