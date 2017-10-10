@@ -56,15 +56,20 @@ namespace WI120917
 
             //Crawler crawler = new Crawler(new Uri("http://en.wikipedia.org"));
             //crawler.Crawl();
-            PageRanker pageRanker = new PageRanker(pages);
-            DenseVector pageRank = pageRanker.GeneratePageRank(10);
-            Console.WriteLine(pageRank.Count);
 
-            for (int i = 0; i < pageRank.Count; i++)
-            {
-                pages[i].pageRank = pageRank[i] * 1000;
-                Console.WriteLine(pages[i].pageRank);
-            }
+
+            //PageRanker pageRanker = new PageRanker(pages);
+            //DenseVector pageRank = pageRanker.GeneratePageRank(10);
+            //Console.WriteLine(pageRank.Count);
+
+            //for (int i = 0; i < pageRank.Count; i++)
+            //{
+            //    pages[i].pageRank = pageRank[i] * 1000;
+            //    Console.WriteLine(pages[i].pageRank);
+            //}
+
+            RankSearch ranker = new RankSearch();
+            ranker.Rank("sloterdijk castle", pages);
 
             Console.Read();
 
