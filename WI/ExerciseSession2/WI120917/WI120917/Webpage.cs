@@ -31,6 +31,32 @@ namespace WI120917
             return false;
         }
 
+        public int GetTokenFrequency(string token)
+        {
+            if (_tokenList.ContainsKey(token))
+            {
+                return _tokenList[token];
+            }
+            else
+            {
+                // The case where the page does not contain the token
+                return 0;
+            }
+        }
+
+        public bool HasToken(string token)
+        {
+            if (_tokenList.ContainsKey(token))
+            {
+                return true;
+            }
+            else
+            {
+                // The case where the page does not contain the token
+                return false;
+            }
+        }
+
 
         public void AddToTokenList(string token)
         {
