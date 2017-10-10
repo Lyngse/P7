@@ -8,9 +8,9 @@ namespace WI120917
     [Serializable]
     class Webpage
     {
-        public int _id;
+        private int _id;
         public Uri uri;
-        public Dictionary<string, int> _tokenList = new Dictionary<string, int>();
+        private Dictionary<string, int> _tokenList = new Dictionary<string, int>();
         public string htmlContent;
         public List<Uri> htmlLinks = new List<Uri>();
         public double pageRank;
