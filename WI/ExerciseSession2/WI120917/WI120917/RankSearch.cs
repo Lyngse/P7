@@ -21,7 +21,7 @@ namespace WI120917
             //    int fileID = int.Parse(file.Split("doc").Last().Replace(".html", ""));
             //    documentIds.Add(fileID);
             //}
-
+            query = query.ToLower();
             string[] queryWords = query.Split(" ");
             queryWords = StringStemmer(queryWords);
             List<double> queryVector = new List<double>();
@@ -61,7 +61,7 @@ namespace WI120917
                         queryVector.Add(0);
                         continue;
                     }
-                }                
+                }
             }
 
             double queryVectorLength = Math.Sqrt(queryVector.Sum(wt => wt = Math.Pow(wt, 2)));
@@ -78,7 +78,7 @@ namespace WI120917
                 {
                     if (page.HasToken(term.Key))
                     {
-                            documentVector.Add(1 + Math.Log10(page.GetTokenFrequency(term.Key)));
+                        documentVector.Add(1 + Math.Log10(page.GetTokenFrequency(term.Key)));
                     }
 
                     else

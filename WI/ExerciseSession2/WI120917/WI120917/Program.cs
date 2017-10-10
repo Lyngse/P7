@@ -39,7 +39,7 @@ namespace WI120917
                 Indexer index = new Indexer();
                 pages = crawler.Crawl();
                 index.Tokenize(pages);
-                WriteToJsonFile(indexLocation, crawler.pages);
+                WriteToJsonFile(indexLocation, pages);
 
             }
             else
@@ -48,15 +48,18 @@ namespace WI120917
                 Console.WriteLine("Index was successfully loaded from file");
             }
 
-            PageRanker pageRanker = new PageRanker(pages);
-            DenseVector pageRank = pageRanker.GeneratePageRank(10);
-            Console.WriteLine(pageRank.Count);
+            //PageRanker pageRanker = new PageRanker(pages);
+            //DenseVector pageRank = pageRanker.GeneratePageRank(10);
+            //Console.WriteLine(pageRank.Count);
 
-            for (int i = 0; i < pageRank.Count; i++)
-            {
-                pages[i].pageRank = pageRank[i];
-                Console.WriteLine(pages[i].pageRank);
-            }
+           // for (int i = 0; i < pageRank.Count; i++)
+           // {
+           //     pages[i].pageRank = pageRank[i];
+           //     Console.WriteLine(pages[i].pageRank);
+           // }
+
+            RankSearch ranker = new RankSearch();
+            ranker.Rank("October", pages);
 
             Console.Read();
 

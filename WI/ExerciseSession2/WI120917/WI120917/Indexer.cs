@@ -5,6 +5,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 using HtmlAgilityPack;
+using SF.Snowball.Ext;
 
 namespace WI120917
 {
@@ -35,10 +36,11 @@ namespace WI120917
                 tagCleanedText = tagCleanedText.ToLower();
 
                 string[] tokens = tagCleanedText.Split(" ");
+                tokens = StringStemmer(tokens);
 
                 for (int i = 0; i < tokens.Length; i++)
                 {
-                    htmlPage.AddToTokenList(tokens[i]);
+                    htmlPage.AddToTokenList( tokens[i]);
                 }
                 Console.WriteLine(htmlPage.uri.ToString());
             }
@@ -62,6 +64,21 @@ namespace WI120917
             }
 
             return webDocument;
+        }
+
+        private string[] StringStemmer(string[] stringArray)
+        {
+            var stemmer = new EnglishStemmer();
+            for (int i = 0; i < stringArray.Length; i++)
+            {
+                stemmer.SetCurrent(stringArray[i]);
+                if (stemmer.Stem())
+                {
+                    stringArray[i] = stemmer.GetCurrent();
+                }
+            }
+
+            return stringArray;
         }
     }
 }
