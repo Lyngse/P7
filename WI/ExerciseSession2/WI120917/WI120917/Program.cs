@@ -39,12 +39,12 @@ namespace WI120917
                 Indexer index = new Indexer();
                 pages = crawler.Crawl();
                 index.Tokenize(pages);
-                WriteToJsonFile(indexLocation, pages);
+                WriteToBinaryFile(indexLocation, pages);
 
             }
             else
             {
-                pages = ReadFromJsonFile<List<Webpage>>(indexLocation);
+                pages = ReadFromBinaryFile<List<Webpage>>(indexLocation);
                 Console.WriteLine("Index was successfully loaded from file");
             }
 
@@ -59,7 +59,7 @@ namespace WI120917
            // }
 
             RankSearch ranker = new RankSearch();
-            ranker.Rank("October", pages);
+            ranker.Rank("October castle castle castle", pages);
 
             Console.Read();
 
@@ -471,6 +471,24 @@ namespace WI120917
             }
 
             return stringArray;
+        }
+
+        public static void WriteToBinaryFile<T>(string filePath, T objectToWrite, bool append = false)
+        {
+            using (Stream stream = File.Open(filePath, append ? FileMode.Append : FileMode.Create))
+            {
+                var binaryFormatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
+                binaryFormatter.Serialize(stream, objectToWrite);
+            }
+        }
+
+        public static T ReadFromBinaryFile<T>(string filePath)
+        {
+            using (Stream stream = File.Open(filePath, FileMode.Open))
+            {
+                var binaryFormatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
+                return (T)binaryFormatter.Deserialize(stream);
+            }
         }
     }
 }

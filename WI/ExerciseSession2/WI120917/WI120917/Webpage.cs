@@ -5,6 +5,7 @@ using System.Text;
 
 namespace WI120917
 {
+    [Serializable]
     class Webpage
     {
         private int _id;
