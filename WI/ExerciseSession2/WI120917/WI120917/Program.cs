@@ -39,7 +39,7 @@ namespace WI120917
                 Indexer index = new Indexer();
                 pages = crawler.Crawl();
                 index.Tokenize(pages);
-                WriteToJsonFile(indexLocation, crawler.pages);
+                WriteToJsonFile(indexLocation, pages);
 
             }
             else
@@ -55,7 +55,7 @@ namespace WI120917
             for (int i = 0; i < pageRank.Count; i++)
             {
                 pages[i].pageRank = pageRank[i];
-                Console.WriteLine(pages[i].pageRank);
+                //Console.WriteLine(pages[i].pageRank);
             }
 
             Console.Read();

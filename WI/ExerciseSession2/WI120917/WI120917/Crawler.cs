@@ -29,7 +29,7 @@ namespace WI120917
             while(pages.Count < 50 && frontier.Count > 0)
             {
                 Uri url = frontier.Dequeue();
-                Webpage currentPage = new Webpage(fileNameNumber, _urlSeed);
+                Webpage currentPage = new Webpage(fileNameNumber, url);
 
                 if (pages.Contains(currentPage))
                 {
