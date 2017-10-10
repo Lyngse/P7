@@ -7,9 +7,9 @@ namespace WI120917
 {
     class Webpage
     {
-        private int _id;
+        public int _id;
         public Uri uri;
-        private Dictionary<string, int> _tokenList = new Dictionary<string, int>();
+        public Dictionary<string, int> _tokenList = new Dictionary<string, int>();
         public string htmlContent;
         public List<Uri> htmlLinks = new List<Uri>();
         public double pageRank;
