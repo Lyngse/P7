@@ -45,64 +45,21 @@ namespace WI120917
 
         public List<int> InitLinks(List<Webpage> pages)
         {
-            HtmlWeb p = new HtmlWeb();
-            HtmlDocument pageContent = p.Load(uri);
-
-            try
-            {
-                foreach (HtmlNode link in pageContent.DocumentNode.SelectNodes("//a[@href]"))
-                {
-                    Uri extractedLink;
-                    HtmlAttribute attribute = link.Attributes["href"];
-                    if (attribute.Value.StartsWith("http"))
-                    {
-                        try
-                        {
-                            extractedLink = new Uri(attribute.Value);
-                            htmlLinks.Add(extractedLink);
-                        }
-                        catch (Exception e)
-                        {
-                            Console.WriteLine("Could not parse: " + attribute.Value);
-                        }
-                    }
-                    else if (attribute.Value.StartsWith("/"))
-                    {
-                        try
-                        {
-                            string baseUrl = "http://";
-                            try
-                            {
-                                baseUrl += uri.Host;
-                                baseUrl += attribute.Value;
-                                extractedLink = new Uri(baseUrl);
-                                htmlLinks.Add(extractedLink);
-                            }
-                            catch (Exception)
-                            {
-                                Console.WriteLine("Bad url: {0}", uri);
-                            }
-                        }
-                        catch (Exception e)
-                        {
-                            Console.WriteLine("Could not parse: " + attribute.Value);
-                        }
-                    }
-
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Selected nodes not parsed on content: " + pageContent);
-            }
 
             List<int> result = new List<int>();
             foreach (var page in pages)
             {
-                if(htmlLinks.Exists(x => x == page.uri))
+                foreach (var hl in htmlLinks)
                 {
-                    result.Add(page.Id);
+                    if(page.uri == hl)
+                    {
+                        result.Add(page.Id);
+                    }
                 }
+                //if(htmlLinks.Exists(x => x == page.uri))
+                //{
+                    
+                //}
             }
             return result;
         }

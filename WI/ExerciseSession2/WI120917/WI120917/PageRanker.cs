@@ -34,7 +34,7 @@ namespace WI120917
                 {
                     TransitionProbabilityMatrix[page.Id, linkId] = 1.0 / linkIdCount;
                 }
-                //List<double> debug = TransitionProbabilityMatrix[page.Id];
+                //Console.WriteLine(TransitionProbabilityMatrix);
             }
         }
 
