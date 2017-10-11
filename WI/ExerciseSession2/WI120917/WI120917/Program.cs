@@ -34,10 +34,9 @@ namespace WI120917
             //Add crawlerLocation for seperate crawlerfile
             if (!File.Exists(indexLocation))
             {
-                Console.WriteLine("Starting crawling for pages..");
+                Console.WriteLine("Starting indexing of local files");
                 Indexer index = new Indexer();
                 pages = crawler.Crawl();
-                Console.WriteLine("Starting indexing of files");
                 index.Tokenize(pages);
                 WriteToBinaryFile(indexLocation, pages);
 
@@ -58,8 +57,8 @@ namespace WI120917
             }
             pages.OrderByDescending(x => x.pageRank).ToList().ForEach(x => Console.WriteLine(x.Id + " - " + x.pageRank));
 
-            RankSearch ranker = new RankSearch();
-            ranker.Rank("October castle castle castle", pages);
+            //RankSearch ranker = new RankSearch();
+            //ranker.Rank("October castle castle castle", pages);
 
             Console.Read();
 
