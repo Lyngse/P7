@@ -7,6 +7,9 @@ using RobotsTxt;
 
 namespace WI120917
 {
+    //Corners cut: HtmlAgilityPack and RobotsTxt libraries are used for:
+    //HtmlAgilityPack to extract any link from a webpage.
+    //RobotsTxt are used to enforce politeness by the RobotsTxt files associated to the link.
     class Crawler
     {
         private Uri _urlSeed;
@@ -20,6 +23,10 @@ namespace WI120917
             this._urlSeed = urlSeed;
         }
 
+        //Crawler sets the htmlcontent, htmlLinks and ID of a Webpage.
+        //Corners cut: Does only crawl the English Wikipedia webpages.
+        //Crawls until 1000 webpages have been retrieved.
+        //Near-duplicate detection: Only checks whether or not a webpage has the same URL.
         public List<Webpage> Crawl()
         {            
             frontier.Enqueue(this._urlSeed);
@@ -81,6 +88,8 @@ namespace WI120917
             return pages;
         }
 
+        //ExtractLinks returns a list of Uri's, which are put into a Webpage's htmlLinks.
+        //HtmlAgilityPack is used here to extract links from an HtmlDocument.
         List<Uri> ExtractLinks(Uri extractSeed)
         {
             List<Uri> extractedLinks = new List<Uri>();

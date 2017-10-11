@@ -20,11 +20,12 @@ namespace WI120917
 
         static void Main(string[] args)
         {
+            //File locations for JSON objects
             string indexFile = AppDomain.CurrentDomain.BaseDirectory + "index.txt";
             string crawlerDataFile = AppDomain.CurrentDomain.BaseDirectory + "crawler.txt";
             string rankFile = AppDomain.CurrentDomain.BaseDirectory + "rank.txt";
 
-            //Add crawlerLocation for seperate crawlerfile
+            //Reads any JSON object files if present, else crawls, indexes and ranks.
             if (!File.Exists(rankFile))
             {
                 if (!File.Exists(indexFile))
@@ -35,29 +36,28 @@ namespace WI120917
                         _pages = crawler.Crawl();
                         WriteToBinaryFile(crawlerDataFile, _pages);
                     }
-
                     else
                     {
                         _pages = ReadFromBinaryFile<List<Webpage>>(crawlerDataFile);
-                        Indexer index = new Indexer();
-                        index.Tokenize(_pages);
-                        WriteToBinaryFile(indexFile, _pages);
                     }
+                    Indexer index = new Indexer();
+                    index.Tokenize(_pages);
+                    WriteToBinaryFile(indexFile, _pages);
                 }
                 else
                 {
-                    _pages = ReadFromBinaryFile<List<Webpage>>(indexFile);
-                    PageRanker pageRanker = new PageRanker(_pages);
-                    DenseVector pageRank = pageRanker.GeneratePageRank(100);
-
-                    _pages.OrderBy(x => x.Id);
-                    for (int i = 0; i < pageRank.Count; i++)
-                    {
-                        _pages[i].pageRank = pageRank[i];
-                    }
-
-                    WriteToBinaryFile(rankFile, _pages);
+                    _pages = ReadFromBinaryFile<List<Webpage>>(indexFile);                    
                 }
+                PageRanker pageRanker = new PageRanker(_pages);
+                DenseVector pageRank = pageRanker.GeneratePageRank(100);
+
+                _pages.OrderBy(x => x.Id);
+                for (int i = 0; i < pageRank.Count; i++)
+                {
+                    _pages[i].pageRank = pageRank[i];
+                }
+
+                WriteToBinaryFile(rankFile, _pages);
             }
 
             else
@@ -65,6 +65,8 @@ namespace WI120917
                 _pages = ReadFromBinaryFile<List<Webpage>>(rankFile);
             }
 
+
+            //Performs our Rank Search for the input string, and prints the results.
             RankSearch ranker = new RankSearch();
             var rankResults = ranker.Rank("Nova Scotia", _pages);
             rankResults.Take(10).ToList().ForEach(x => Console.WriteLine(x.Key.Id + " - " + x.Value));
@@ -72,6 +74,7 @@ namespace WI120917
             Console.Read();
         }
 
+        //Writes content to the destination file
         public static void WriteToBinaryFile<T>(string filePath, T objectToWrite, bool append = false)
         {
             using (Stream stream = File.Open(filePath, append ? FileMode.Append : FileMode.Create))
@@ -81,6 +84,7 @@ namespace WI120917
             }
         }
 
+        //Reads content from the destination file
         public static T ReadFromBinaryFile<T>(string filePath)
         {
             using (Stream stream = File.Open(filePath, FileMode.Open))

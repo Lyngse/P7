@@ -5,6 +5,10 @@ using System.Text;
 
 namespace WI120917
 {
+    //Serializable to enable the WriteToBinaryFile method.
+    //Must implement this to enable saving the private members of the class.
+
+    //No corners cut. Tokens in this class' _tokenList are added in the Tokenize method of the Indexer class.
     [Serializable]
     class Webpage
     {
@@ -57,7 +61,6 @@ namespace WI120917
                 return false;
             }
         }
-
 
         public void AddToTokenList(string token)
         {

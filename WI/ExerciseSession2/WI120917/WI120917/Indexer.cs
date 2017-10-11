@@ -9,8 +9,13 @@ using SF.Snowball.Ext;
 
 namespace WI120917
 {
+    //Corners cut: Using Snowball Stemmer to stem any token.
+    //Corners cut: Replacing all - and _ with a whitespace, which can therefore not be recognized as a query in our search.
+    //Corners cut: Using HtmlAgilityPack to load the html content of a page.
+    //Corners cut: Using HtmlAgilityPack to remove any unwanted tags from the content.
     class Indexer
     {
+        //Tokenize will add tokens to each webpage one after another.
         public void Tokenize(List<Webpage> htmlPages)
         {
 
@@ -22,17 +27,8 @@ namespace WI120917
 
                 string cleanText = htmlDocument.DocumentNode.SelectSingleNode("/html/body").InnerText;
                 cleanText = Regex.Replace(cleanText, @"\t+\n+\r+\s+", " ");
-
-                //cleanText = HttpUtility.HtmlDecode(cleanText);
-
                 string tagCleanedText = Regex.Replace(cleanText, @"<[^>]*>", "");
                 tagCleanedText = tagCleanedText.Replace("-", " ").Replace("_", " ");
-
-                /*tagCleanedText = tagCleanedText.Replace("\n", " ").Replace("\r", " ").Replace("\t", " ").Replace(":", "")
-                    .Replace("'", "").Replace(".", "").Replace(",", "").Replace(";", "").Replace("-", " ").Replace("_", " ").Replace("/","");*/
-                //tagCleanedText = Regex.Replace(tagCleanedText, @"[^a-z|A-Z|\s]", "");
-                //tagCleanedText = Regex.Replace(tagCleanedText, @"[0-9]", "");
-                //tagCleanedText = Regex.Replace(tagCleanedText, @"\s+", " ");
                 tagCleanedText = tagCleanedText.ToLower();
 
                 string[] tokens = tagCleanedText.Split(" ");
@@ -45,6 +41,8 @@ namespace WI120917
                 Console.WriteLine(htmlPage.uri.ToString());
             }
         }
+
+        //Method to remove any script or comment node as defined by the HtmlAgilityPack.
         private HtmlDocument RemoveScriptsAndComments(HtmlDocument webDocument)
         {
             try
@@ -66,6 +64,7 @@ namespace WI120917
             return webDocument;
         }
 
+        //Snowball Stemmer. Stems an input string array according to the English language.
         private string[] StringStemmer(string[] stringArray)
         {
             var stemmer = new EnglishStemmer();

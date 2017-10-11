@@ -7,20 +7,12 @@ using SF.Snowball.Ext;
 
 namespace WI120917
 {
+    //Corners cut: Using Snowball Stemmer to stem the words of the query.
+    //RankSearch is used to obtain the final rank of a search query, combined with the pageRank.
     class RankSearch
     {
-
-
         public List<KeyValuePair<Webpage, double>> Rank(string query, List<Webpage> pages)
         {
-            //List<string> files = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory + @"\docs\").ToList();
-            //int docCount = files.Count;
-            //List<int> documentIds = new List<int>();
-            //foreach (var file in files)
-            //{
-            //    int fileID = int.Parse(file.Split("doc").Last().Replace(".html", ""));
-            //    documentIds.Add(fileID);
-            //}
             query = query.ToLower();
             string[] queryWords = query.Split(" ");
             queryWords = StringStemmer(queryWords);

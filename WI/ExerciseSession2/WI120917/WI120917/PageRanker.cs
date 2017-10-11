@@ -6,6 +6,8 @@ using MathNet.Numerics.LinearAlgebra.Double;
 
 namespace WI120917
 {
+    // Corners cut: We implementd the LinearAlgebra library, to be able to work with matrices.
+    // PageRanker calculates the pagerank of a specific page based on the formula from the 5th lecture. 
     class PageRanker
     {
         SparseMatrix TransitionProbabilityMatrix;
@@ -37,6 +39,7 @@ namespace WI120917
             }
         }
 
+        //Generates the pagerank of the page, returned as a vector, which will be iterated on n times, parsed to the function.
         public DenseVector GeneratePageRank (int n)
         {
             DenseVector resultVector = DenseVector.Create(nrOfPages, 0.0);
