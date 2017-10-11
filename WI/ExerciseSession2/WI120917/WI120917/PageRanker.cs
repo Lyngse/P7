@@ -32,9 +32,8 @@ namespace WI120917
 
                 foreach (var linkId in linkIds)
                 {
-                    TransitionProbabilityMatrix[page.Id, linkId] = 1.0 / linkIdCount;
+                    TransitionProbabilityMatrix[page.Id-1, linkId-1] = 1.0 / linkIdCount;
                 }
-                //Console.WriteLine(TransitionProbabilityMatrix);
             }
         }
 
@@ -42,10 +41,13 @@ namespace WI120917
         {
             DenseVector resultVector = DenseVector.Create(nrOfPages, 0.0);
             resultVector[0] = 1.0;
+            var pageRank = ((1 - randomProbability) * TransitionProbabilityMatrix) + (randomProbability * TransitionRandomMatrix);
+            //Console.WriteLine(TransitionProbabilityMatrix.Column(30));
+            //Console.WriteLine(TransitionRandomMatrix.Column(30));
+            //Console.WriteLine(pageRank.Column(30));
 
             for (int i = 0; i < n; i++)
             {
-                var pageRank = ((1 - randomProbability) * TransitionProbabilityMatrix) + (randomProbability * TransitionRandomMatrix);
                 resultVector = (DenseVector)(resultVector * pageRank);
             }
             return resultVector;

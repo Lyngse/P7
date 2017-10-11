@@ -31,7 +31,7 @@ namespace WI120917
                 {
                     if (!File.Exists(crawlerDataFile))
                     {
-                        Crawler crawler = new Crawler(new Uri("http://en.wikipedia.org"));
+                        Crawler crawler = new Crawler(new Uri("https://en.wikipedia.org/wiki/Main_Page"));
                         _pages = crawler.Crawl();
                         WriteToBinaryFile(crawlerDataFile, _pages);
                     }
@@ -49,12 +49,12 @@ namespace WI120917
                 {
                     _pages = ReadFromBinaryFile<List<Webpage>>(indexFile);
                     PageRanker pageRanker = new PageRanker(_pages);
-                    DenseVector pageRank = pageRanker.GeneratePageRank(10);
+                    DenseVector pageRank = pageRanker.GeneratePageRank(100);
 
+                    _pages.OrderBy(x => x.Id);
                     for (int i = 0; i < pageRank.Count; i++)
                     {
                         _pages[i].pageRank = pageRank[i];
-                        Console.WriteLine(_pages[i].pageRank);
                     }
 
                     WriteToBinaryFile(rankFile, _pages);
@@ -69,7 +69,6 @@ namespace WI120917
             RankSearch ranker = new RankSearch();
             var rankResults = ranker.Rank("Nova Scotia", _pages);
             rankResults.Take(10).ToList().ForEach(x => Console.WriteLine(x.Key.Id + " - " + x.Value));
-
 
             Console.Read();
         }

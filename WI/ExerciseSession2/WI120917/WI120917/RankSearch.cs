@@ -97,6 +97,7 @@ namespace WI120917
                 {
                     documentScore += documentVector[i] * queryVector[i];
                 }
+
                 documentScore *= page.pageRank;
                 results.Add(page, documentScore);
             }
