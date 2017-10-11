@@ -31,7 +31,7 @@ namespace WI120917
                 {
                     if (!File.Exists(crawlerDataFile))
                     {
-                        Crawler crawler = new Crawler(new Uri("https://en.wikipedia.org/wiki/Main_Page"));
+                        Crawler crawler = new Crawler(new Uri("http://en.wikipedia.org"));
                         _pages = crawler.Crawl();
                         WriteToBinaryFile(crawlerDataFile, _pages);
                     }
