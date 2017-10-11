@@ -34,9 +34,10 @@ namespace WI120917
             //Add crawlerLocation for seperate crawlerfile
             if (!File.Exists(indexLocation))
             {
-                Console.WriteLine("Starting indexing of local files");
+                Console.WriteLine("Starting crawling for pages..");
                 Indexer index = new Indexer();
                 pages = crawler.Crawl();
+                Console.WriteLine("Starting indexing of files");
                 index.Tokenize(pages);
                 WriteToBinaryFile(indexLocation, pages);
 
@@ -47,18 +48,18 @@ namespace WI120917
                 Console.WriteLine("Index was successfully loaded from file");
             }
 
-            //PageRanker pageRanker = new PageRanker(pages);
-            //DenseVector pageRank = pageRanker.GeneratePageRank(10);
-            //Console.WriteLine(pageRank.Count);
+            PageRanker pageRanker = new PageRanker(pages);
+            DenseVector pageRank = pageRanker.GeneratePageRank(100);
 
-           // for (int i = 0; i < pageRank.Count; i++)
-           // {
-           //     pages[i].pageRank = pageRank[i];
-           //     Console.WriteLine(pages[i].pageRank);
-           // }
+            pages.OrderBy(x => x.Id);
+            for (int i = 0; i < pageRank.Count; i++)
+            {
+                pages[i].pageRank = pageRank[i];
+            }
+            pages.OrderByDescending(x => x.pageRank).ToList().ForEach(x => Console.WriteLine(x.Id + " - " + x.pageRank));
 
-            RankSearch ranker = new RankSearch();
-            ranker.Rank("October castle castle castle", pages);
+            //RankSearch ranker = new RankSearch();
+            //ranker.Rank("October castle castle castle", pages);
 
             Console.Read();
 
