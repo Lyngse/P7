@@ -27,6 +27,7 @@ namespace WI120917
             int fileNameNumber = 1;            
 
             while(pages.Count < 1000 && frontier.Count > 0)
+
             {
                 Uri url = frontier.Dequeue();
                 Webpage currentPage = new Webpage(fileNameNumber, url);

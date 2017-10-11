@@ -72,21 +72,13 @@ namespace WI120917
 
         public List<int> InitLinks(List<Webpage> pages)
         {
-
             List<int> result = new List<int>();
             foreach (var page in pages)
             {
-                foreach (var hl in htmlLinks)
+                if (htmlLinks.Exists(x => x == page.uri))
                 {
-                    if(page.uri == hl)
-                    {
-                        result.Add(page.Id);
-                    }
+                    result.Add(page.Id);
                 }
-                //if(htmlLinks.Exists(x => x == page.uri))
-                //{
-                    
-                //}
             }
             return result;
         }
