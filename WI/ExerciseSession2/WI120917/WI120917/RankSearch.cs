@@ -11,7 +11,7 @@ namespace WI120917
     {
 
 
-        public void Rank(string query, List<Webpage> pages)
+        public List<KeyValuePair<Webpage, double>> Rank(string query, List<Webpage> pages)
         {
             //List<string> files = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory + @"\docs\").ToList();
             //int docCount = files.Count;
@@ -97,11 +97,11 @@ namespace WI120917
                 {
                     documentScore += documentVector[i] * queryVector[i];
                 }
+                documentScore *= page.pageRank;
                 results.Add(page, documentScore);
             }
 
-            var sortedResults = results.OrderByDescending(x => x.Value);
-            sortedResults.Take(10).ToList().ForEach(x => Console.WriteLine(x.Key.Id + " - " + x.Value));
+            return results.OrderByDescending(x => x.Value).ToList();
         }
 
         private string[] StringStemmer(string[] stringArray)
