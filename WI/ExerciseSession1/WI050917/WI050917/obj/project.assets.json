@@ -1,5 +1,5 @@
 {
-  "version": 2,
+  "version": 3,
   "targets": {
     ".NETCoreApp,Version=v1.1": {
       "Libuv/1.9.1": {
@@ -7037,23 +7037,41 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Christian\\.nuget\\packages\\": {}
+    "C:\\Users\\Andreas Smed\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
+    "restoreSettings": {
+      "hideWarningsAndErrors": true
+    },
     "restore": {
-      "projectUniqueName": "C:\\Users\\Christian\\Documents\\GitHub\\P7\\WI\\ExerciseSession1\\WI050917\\WI050917\\WI050917.csproj",
+      "projectUniqueName": "C:\\Users\\Andreas Smed\\Documents\\GitHub\\P7\\WI\\ExerciseSession1\\WI050917\\WI050917\\WI050917.csproj",
       "projectName": "WI050917",
-      "projectPath": "C:\\Users\\Christian\\Documents\\GitHub\\P7\\WI\\ExerciseSession1\\WI050917\\WI050917\\WI050917.csproj",
-      "outputPath": "C:\\Users\\Christian\\Documents\\GitHub\\P7\\WI\\ExerciseSession1\\WI050917\\WI050917\\obj\\",
+      "projectPath": "C:\\Users\\Andreas Smed\\Documents\\GitHub\\P7\\WI\\ExerciseSession1\\WI050917\\WI050917\\WI050917.csproj",
+      "packagesPath": "C:\\Users\\Andreas Smed\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Andreas Smed\\Documents\\GitHub\\P7\\WI\\ExerciseSession1\\WI050917\\WI050917\\obj\\",
       "projectStyle": "PackageReference",
+      "configFilePaths": [
+        "C:\\Users\\Andreas Smed\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+      ],
       "originalTargetFrameworks": [
         "netcoreapp1.1"
       ],
+      "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {},
+        "https://api.nuget.org/v3/index.json": {}
+      },
       "frameworks": {
         "netcoreapp1.1": {
           "projectReferences": {}
         }
+      },
+      "warningProperties": {
+        "warnAsError": [
+          "NU1605"
+        ]
       }
     },
     "frameworks": {

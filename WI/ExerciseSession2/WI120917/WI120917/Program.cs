@@ -58,8 +58,8 @@ namespace WI120917
             }
             pages.OrderByDescending(x => x.pageRank).ToList().ForEach(x => Console.WriteLine(x.Id + " - " + x.pageRank));
 
-            //RankSearch ranker = new RankSearch();
-            //ranker.Rank("October castle castle castle", pages);
+            RankSearch ranker = new RankSearch();
+            ranker.Rank("October castle castle castle", pages);
 
             Console.Read();
 

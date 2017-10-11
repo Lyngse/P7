@@ -46,21 +46,17 @@ namespace WI120917
 
             foreach (var term in termFrequency)
             {
-                foreach (var page in pages)
+                if (!pages.Exists(x => x.HasToken(term.Key)))
                 {
-                    if (page.HasToken(term.Key))
-                    {
-                        double weightedTermFrequency = 1 + Math.Log10(term.Value);
-                        int docFrequency = page.GetTokenFrequency(term.Key);
-                        double iDocFrequency = Math.Log10(pages.Count / (double)docFrequency);
-                        double wt = weightedTermFrequency * iDocFrequency;
-                        queryVector.Add(wt);
-                    }
-                    else
-                    {
-                        queryVector.Add(0);
-                        continue;
-                    }
+                    queryVector.Add(0);
+                }
+                else
+                {
+                    double weightedTermFrequency = 1 + Math.Log10(term.Value);
+                    int documentFreq = pages.FindAll(x => x.HasToken(term.Key)).Count;
+                    double iDocFrequency = Math.Log10(pages.Count / (double)documentFreq);
+                    double wt = weightedTermFrequency * iDocFrequency;
+                    queryVector.Add(wt);
                 }
             }
 
@@ -80,7 +76,6 @@ namespace WI120917
                     {
                         documentVector.Add(1 + Math.Log10(page.GetTokenFrequency(term.Key)));
                     }
-
                     else
                     {
                         documentVector.Add(0);
