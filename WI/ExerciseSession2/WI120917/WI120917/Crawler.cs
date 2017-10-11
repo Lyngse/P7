@@ -26,7 +26,8 @@ namespace WI120917
 
             int fileNameNumber = 1;            
 
-            while(pages.Count < 200 && frontier.Count > 0)
+            while(pages.Count < 1000 && frontier.Count > 0)
+
             {
                 Uri url = frontier.Dequeue();
                 Webpage currentPage = new Webpage(fileNameNumber, url);
@@ -84,10 +85,10 @@ namespace WI120917
         {
             List<Uri> extractedLinks = new List<Uri>();
             HtmlWeb page = new HtmlWeb();
-            HtmlDocument pageContent = page.Load(extractSeed);
 
             try
             {
+                HtmlDocument pageContent = page.Load(extractSeed);
                 foreach (HtmlNode link in pageContent.DocumentNode.SelectNodes("//a[@href]"))
                 {
                     Uri extractedLink;
@@ -130,7 +131,7 @@ namespace WI120917
             }
             catch (Exception e)
             {
-                Console.WriteLine("Selected nodes not parsed on content: " + pageContent);
+                Console.WriteLine("Selected nodes not parsed on content: " + extractSeed.ToString());
             }
             return extractedLinks;
         }
