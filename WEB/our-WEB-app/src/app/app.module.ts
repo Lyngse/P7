@@ -10,6 +10,8 @@ import { SearchComponent } from './mainpage/search/search.component';
 import { ShoppinglistComponent } from './mainpage/shoppinglist/shoppinglist.component';
 import { ResultpageComponent } from './resultpage/resultpage.component';
 import { RouterModule, Routes } from '@angular/router';
+import { APIService } from './services/api.service';
+import { HttpModule, Http } from '@angular/http';
 
 const appRouter : Routes = [
 { path : 'mainpage', component: MainpageComponent},
@@ -30,9 +32,10 @@ const appRouter : Routes = [
   ],
   imports: [
     BrowserModule,
-    RouterModule.forRoot(appRouter)
+    RouterModule.forRoot(appRouter),
+    HttpModule
   ],
-  providers: [],
+  providers: [APIService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

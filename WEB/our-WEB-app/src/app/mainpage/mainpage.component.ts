@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { APIService } from '../services/api.service';
 
 @Component({
   selector: 'app-mainpage',
@@ -7,7 +8,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MainpageComponent implements OnInit {
 
-  constructor() { }
+  constructor(private apiService: APIService) { }
+
+  getSessionToken(){
+    this.apiService.getSessionToken().then(res => {
+      console.log(res);
+    });
+  }
 
   ngOnInit() {
   }
