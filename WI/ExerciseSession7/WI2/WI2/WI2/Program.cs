@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using MathNet.Numerics.LinearAlgebra;
 using MathNet.Numerics;
 
+
 namespace WI2
 {
     class Program
@@ -14,6 +15,8 @@ namespace WI2
             List<User> userList = new List<User>();
             int idCounter = 0;
 
+
+            Control.UseNativeMKL();
 
             string[] text = data.Split("\r\n");
 
@@ -33,8 +36,8 @@ namespace WI2
             Matrix<double> associationMatrix =  fillMatrix(userList, out diagonalMatrix);
 
             Matrix<double> laplacianMatrix = diagonalMatrix - associationMatrix;
-            
-            
+
+            laplacianMatrix.Evd(Symmetricity.Symmetric);
 
             Console.WriteLine(laplacianMatrix.ToString());
 
