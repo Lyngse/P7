@@ -78,48 +78,30 @@ namespace WI2
             Console.ReadKey();
         }
 
-        public static List<int> MaxCutCommunity(int nrOfCuts, List<double[]> sortedVectors)
-        {
-            List<int> biggestIndexes = new List<int>();
-            List<double> biggestValuesList = new List<double>();            
-
-            for (int i = 0; i < nrOfCuts; i++)
-            {
-                double biggestValue = 0.0;
-                for (int j = 0; j < sortedVectors.Count; j++)
-                {
-                    var currentDifference = Math.Abs(sortedVectors[j][1] - sortedVectors[j + 1][1]);
-                    if (currentDifference > biggestValue && biggestValuesList.Exists(x => x == biggestValue))
-                    {
-                        biggestValue = currentDifference;
-                        biggestValuesList.Add(biggestValue);
-                        biggestIndexes.Add(j);
-                    }
-                }
-            }
-
-            return biggestIndexes;
-        }
-
-        public List<List<double[]>> FindCommunities(int numberOfCommunities, List<double[]> sortedVectors)
+        public static List<List<double[]>> MaxCutCommunity(List<double[]> sortedVectors)
         {
             List<List<double[]>> communities = new List<List<double[]>>();
-            List<int> cutIndexes = MaxCutCommunity(numberOfCommunities - 1, sortedVectors);
-            List<double[]> deltaSortedVectors = sortedVectors;
+            List<double[]> firstCommunity = new List<double[]>();
+            List<double[]> secondCommunity = new List<double[]>();
 
-            cutIndexes.OrderBy(x => x);
+            var biggestIndex = 0;
+            var biggestValue = 0.0;
 
-            for (int i = 0; i < numberOfCommunities; i++)
+            for (int i = 0; i < sortedVectors.Count; i++)
             {
-                communities.Add(deltaSortedVectors.Take(cutIndexes[i]).ToList());
-
-                if(i == numberOfCommunities - 1)
+                var currentDifference = Math.Abs(sortedVectors[i][1] - sortedVectors[i + 1][1]);
+                if (currentDifference > biggestValue)
                 {
-                    communities.Add(deltaSortedVectors.Skip(cutIndexes[i]).ToList());
+                    biggestValue = currentDifference;
+                    biggestIndex = i;
                 }
-
-                deltaSortedVectors = sortedVectors.Skip(cutIndexes[i]).ToList();
             }
+
+            firstCommunity = sortedVectors.Take(biggestIndex).ToList();
+            secondCommunity = sortedVectors.Skip(biggestIndex).ToList();
+
+            communities.Add(firstCommunity);
+            communities.Add(secondCommunity);
 
             return communities;
         }
