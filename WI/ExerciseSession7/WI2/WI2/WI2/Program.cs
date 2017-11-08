@@ -51,27 +51,9 @@ namespace WI2
 
             Evd<double> eigen = laplacianMatrix.Evd(Symmetricity.Symmetric);
             var eigenVectors = eigen.EigenVectors.ToRowArrays();
-            var sortedVectors = eigenVectors.OrderBy(x => x[1]).ToArray();
-            var biggestIndex = 0;
-            var biggestValue = 0.0;
+            var sortedVectors = eigenVectors.OrderBy(x => x[1]).ToList();
 
-
-            for (int i = 0; i < sortedVectors.Length; i++)
-            {
-                var currentDifference = Math.Abs(sortedVectors[i][1] - sortedVectors[i+1][1]);
-                if (currentDifference > biggestValue )
-                {
-                    biggestValue = currentDifference;
-                    biggestIndex = i;
-                }
-            }
-
-            List<double[]> communities = new List<double[]>();
-
-            //communities.Add(sortedVectors.Take(biggestIndex).);
-
-
-
+            List<List<double[]>> communities = MaxCutCommunity(sortedVectors);
 
             builder1.AppendLine(eigen.EigenVectors.ToMatrixString(userList.Count, userList.Count));
             builder2.AppendLine(eigen.EigenValues.ToVectorString(eigen.EigenValues.Count, Int32.MaxValue));
@@ -94,6 +76,34 @@ namespace WI2
             Console.WriteLine(laplacianMatrix.ToString());
 
             Console.ReadKey();
+        }
+
+        public static List<List<double[]>> MaxCutCommunity(List<double[]> sortedVectors)
+        {
+            List<List<double[]>> communities = new List<List<double[]>>();
+            List<double[]> firstCommunity = new List<double[]>();
+            List<double[]> secondCommunity = new List<double[]>();
+
+            var biggestIndex = 0;
+            var biggestValue = 0.0;
+
+            for (int i = 0; i < sortedVectors.Count; i++)
+            {
+                var currentDifference = Math.Abs(sortedVectors[i][1] - sortedVectors[i + 1][1]);
+                if (currentDifference > biggestValue)
+                {
+                    biggestValue = currentDifference;
+                    biggestIndex = i;
+                }
+            }
+
+            firstCommunity = sortedVectors.Take(biggestIndex).ToList();
+            secondCommunity = sortedVectors.Skip(biggestIndex).ToList();
+
+            communities.Add(firstCommunity);
+            communities.Add(secondCommunity);
+
+            return communities;
         }
 
         public static Matrix<double> fillMatrix(List<User> userList, out Matrix<double> diagonalMatrix)
