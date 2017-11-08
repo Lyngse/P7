@@ -45,7 +45,7 @@ namespace WI2
 
             Matrix<double> diagonalMatrix;
 
-            Matrix<double> associationMatrix = fillMatrix(userList, out diagonalMatrix);
+            Matrix<double> associationMatrix = FillMatrix(userList, out diagonalMatrix);
 
             Matrix<double> laplacianMatrix = diagonalMatrix - associationMatrix;
 
@@ -53,7 +53,7 @@ namespace WI2
             var eigenVectors = eigen.EigenVectors.ToRowArrays();
             var sortedVectors = eigenVectors.OrderBy(x => x[1]).ToList();
 
-            List<List<double[]>> communities = MaxCutCommunity(sortedVectors);
+            List<List<double[]>> communities = MaxCutCommunity(9, sortedVectors);
 
             builder1.AppendLine(eigen.EigenVectors.ToMatrixString(userList.Count, userList.Count));
             builder2.AppendLine(eigen.EigenValues.ToVectorString(eigen.EigenValues.Count, Int32.MaxValue));
@@ -78,35 +78,44 @@ namespace WI2
             Console.ReadKey();
         }
 
-        public static List<List<double[]>> MaxCutCommunity(List<double[]> sortedVectors)
+        public static List<List<double[]>> MaxCutCommunity(int numbOfCuts, List<double[]> sortedVectors)
         {
             List<List<double[]>> communities = new List<List<double[]>>();
-            List<double[]> firstCommunity = new List<double[]>();
-            List<double[]> secondCommunity = new List<double[]>();
+            Dictionary<double, int> biggestDifferences = new Dictionary<double, int>();
 
-            var biggestIndex = 0;
-            var biggestValue = 0.0;
+            var communityCuts = FindNCuts(numbOfCuts, sortedVectors, biggestDifferences);
+            communityCuts = communityCuts.OrderBy(x => x.Value).ToList();
 
-            for (int i = 0; i < sortedVectors.Count; i++)
+            var toSkip = 0;
+            var sortedVectorCopy = sortedVectors.ToList();
+
+            for (int i = 0; i < communityCuts.Count; i++)
             {
-                var currentDifference = Math.Abs(sortedVectors[i][1] - sortedVectors[i + 1][1]);
-                if (currentDifference > biggestValue)
-                {
-                    biggestValue = currentDifference;
-                    biggestIndex = i;
-                }
+                var currentCommunity = sortedVectorCopy.Take(communityCuts[i].Value - toSkip).ToList();
+                sortedVectorCopy = sortedVectorCopy.Skip(communityCuts[i].Value - toSkip).ToList();
+
+                toSkip = communityCuts[i].Value;
+                communities.Add(currentCommunity);
             }
 
-            firstCommunity = sortedVectors.Take(biggestIndex).ToList();
-            secondCommunity = sortedVectors.Skip(biggestIndex).ToList();
-
-            communities.Add(firstCommunity);
-            communities.Add(secondCommunity);
+            communities.Add(sortedVectorCopy);
 
             return communities;
         }
 
-        public static Matrix<double> fillMatrix(List<User> userList, out Matrix<double> diagonalMatrix)
+        private static List<KeyValuePair<double, int>> FindNCuts(int numbOfCuts, List<double[]> sortedVectors, Dictionary<double, int> biggestDifferences)
+        {
+            for (int i = 0; i < sortedVectors.Count - 1; i++)
+            {
+                var currentDifference = Math.Abs(sortedVectors[i][1] - sortedVectors[i + 1][1]);
+                biggestDifferences.Add(currentDifference, i + 1);
+            }
+            var communityCuts = biggestDifferences.OrderByDescending(x => x.Key).ToList().Take(numbOfCuts).ToList();
+
+            return communityCuts;
+        }
+
+        public static Matrix<double> FillMatrix(List<User> userList, out Matrix<double> diagonalMatrix)
         {
             Matrix<double> associationMatrix = Matrix<double>.Build.Dense(userList.Count, userList.Count);
             Matrix<double> dMatrix = Matrix<double>.Build.DenseDiagonal(userList.Count, userList.Count);
