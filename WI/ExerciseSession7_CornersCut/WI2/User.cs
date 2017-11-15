@@ -11,11 +11,12 @@ namespace WI2
         public List<User> friends = new List<User>();
         string summary;
         string review;
-        private double reviewScore;
+        public double reviewScore;
         public int id;
         public double distance;
         public double weight;
-        private int communityID;
+        public int communityID;
+        private double[] userEV;
 
         public User(int _id, string uname, string[] friendsStrings, string summ, string rev)
         {
@@ -40,8 +41,7 @@ namespace WI2
 
         public override string ToString()
         {
-            string returnString = this.username + " has friends: " + this.friends.Count.ToString();
-            return returnString;
+            return this.username;
         }
 
         public string GetName()
@@ -54,31 +54,14 @@ namespace WI2
             return this.review;
         }
 
-        public double GetScore()
+        public void SetEV(double[] EV)
         {
-            try
-            {
-                return this.reviewScore;
-            }
-            catch (Exception)
-            {
-                throw new Exception("GetScore threw an exception!");
-            }
+            this.userEV = EV;
         }
 
-        public void SetScore(double userScore)
+        public double GetEV()
         {
-            this.reviewScore = userScore;
-        }
-
-        public void SetCommunity(int communityid)
-        {
-            this.communityID = communityid;
-        }
-
-        public int GetCommunity()
-        {
-            return this.communityID;
+            return this.userEV[1];
         }
     }
 }

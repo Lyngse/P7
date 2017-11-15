@@ -16,17 +16,11 @@ namespace WI2
     {
         static void Main(string[] args)
         {
-            string path = AppDomain.CurrentDomain.BaseDirectory + @"friendships.txt";
+            string path = AppDomain.CurrentDomain.BaseDirectory + @"friendships.reviews.txt";
             string data = System.IO.File.ReadAllText(path);
             List<User> userList = new List<User>();
             int idCounter = 0;
-
-            StringBuilder builder1 = new StringBuilder();
-            StringBuilder builder2 = new StringBuilder();
-            StringBuilder builder3 = new StringBuilder();
-
-
-
+            
             Control.UseNativeMKL();
             Control.UseMultiThreading();
 
@@ -53,32 +47,27 @@ namespace WI2
             var eigenVectors = eigen.EigenVectors.ToRowArrays();
             var sortedVectors = eigenVectors.OrderBy(x => x[1]).ToList();
 
-            List<List<double[]>> communities = MaxCutCommunity(9, sortedVectors);
+            List<List<double[]>> communities = MaxCutCommunity(9, userList, eigenVectors.ToList());
 
-            builder1.AppendLine(eigen.EigenVectors.ToMatrixString(userList.Count, userList.Count));
-            builder2.AppendLine(eigen.EigenValues.ToVectorString(eigen.EigenValues.Count, Int32.MaxValue));
+            Classifier classifier = new Classifier();
+            List<double> reviewScores = new List<double>();
 
-            for (int i = 0; i < sortedVectors.Count; i++)
-            {
-                builder3.AppendLine(sortedVectors[i][1].ToString(CultureInfo.InvariantCulture));
-            }
+            classifier.Classify(userList);
 
-
-            string destPath1 = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "EvdEigenVectors.txt");
-            string destPath2 = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "EvdEigenValues.txt");
-            string destPath3 = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "SortedValues.txt");
-
-
-            File.WriteAllText(destPath1, builder1.ToString());
-            File.WriteAllText(destPath2, builder2.ToString());
-            File.WriteAllText(destPath3, builder3.ToString());
-
-            Console.WriteLine(laplacianMatrix.ToString());
+            Dictionary<User, string> userDic = classifier.WillUsersBuyProduct(userList);
 
             Console.ReadKey();
         }
 
-        public static List<List<double[]>> MaxCutCommunity(int numbOfCuts, List<double[]> sortedVectors)
+        //public static List<List<double[]>> MaxCutCommunity(int numbOfCuts, List<User> userList, List<double[]> eigenVectors)
+        //{
+        //    Dictionary<double, int> biggestDifferences = new Dictionary<double, int>();
+
+        //    var communityCuts = FindNCuts(numbOfCuts, eigenVectors, biggestDifferences);
+            
+        //}
+
+        public static List<List<double[]>> iMaxCutCommunity(int numbOfCuts, List<double[]> sortedVectors)
         {
             List<List<double[]>> communities = new List<List<double[]>>();
             Dictionary<double, int> biggestDifferences = new Dictionary<double, int>();
