@@ -19,9 +19,14 @@ namespace WI2
             Control.UseNativeMKL();
             Control.UseMultiThreading();
 
+            string buyResult = AppDomain.CurrentDomain.BaseDirectory + "buyResult.txt";
             string path = AppDomain.CurrentDomain.BaseDirectory + @"friendships.reviews.txt";
             string data = System.IO.File.ReadAllText(path);
             string[] text = data.Split("\r\n");
+
+            string pathResults = AppDomain.CurrentDomain.BaseDirectory + @"friendships.reviews.results.txt";
+            string dataResults = File.ReadAllText(pathResults);
+            string[] textResults = dataResults.Split("\r\n");
 
             WITools tools = new WITools();
             List<User> userList = tools.InitUsers(text);
@@ -40,13 +45,47 @@ namespace WI2
 
             foreach (User user in userList)
             {
-                Console.WriteLine(user.ToString() + " - IS IN COMMUNITY: " + user.GetCommunity());
+                Console.WriteLine(user.ToString() + " - IS IN COMMUNITY: " + user.communityID);
             }
-            Console.ReadKey();
 
             Classifier classifier = new Classifier();
             classifier.Classify(userList);
             Dictionary<User, string> userDic = classifier.WillUsersBuyProduct(userList);
+
+            StreamWriter sw = new StreamWriter(buyResult);
+            int i = 3;
+            foreach (var entry in userDic)
+            {
+                string assertionValue = "";
+                if (textResults[i].Split("purchase: ")[1] == "yes")
+                {
+                    if (userDic[entry.Key] == "Will buy product!")
+                    {
+                        assertionValue = $"{entry.Key} assertion is CORRECT";
+                        Console.WriteLine($"{entry.Key} assertion is CORRECT");
+                    }
+                    else
+                    {
+                        assertionValue = $"{entry.Key} assertion is NOT CORRECT";
+                        Console.WriteLine($"{entry.Key} assertion is NOT CORRECT");
+                    }
+                }
+                else if (textResults[i].Split("purchase: ")[1] == "no")
+                {
+                    if (userDic[entry.Key] == "Will not buy product!")
+                    {
+                        assertionValue = $"{entry.Key} assertion is CORRECT";
+                        Console.WriteLine($"{entry.Key} assertion is CORRECT");
+                    }
+                    else
+                    {
+                        assertionValue = $"{entry.Key} assertion is NOT CORRECT";
+                        Console.WriteLine($"{entry.Key} assertion is NOT CORRECT");
+                    }
+                }
+                sw.WriteLine(entry.Key + " - " + entry.Key.communityID + " - " + userDic[entry.Key] + " - " + assertionValue);
+                i = i + 8;
+            }
 
             Console.ReadKey();
         }

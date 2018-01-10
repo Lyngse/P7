@@ -9,7 +9,7 @@ namespace WI120917
 {
     //Corners cut: Using Snowball Stemmer to stem the words of the query.
     //RankSearch is used to obtain the final rank of a search query, combined with the pageRank.
-    class RankSearch
+    class IndexAndRankSearch
     {
         public List<KeyValuePair<Webpage, double>> Rank(string query, List<Webpage> pages)
         {
@@ -24,6 +24,7 @@ namespace WI120917
             // Contains the unique query words and the frequency in the query
             Dictionary<string, int> termFrequency = new Dictionary<string, int>();
 
+            // Checks how many times each word appears in the query
             foreach (var qw in queryWords)
             {
                 if (!termFrequency.ContainsKey(qw))
@@ -36,6 +37,7 @@ namespace WI120917
                 }
             }
 
+            // Indexing
             foreach (var term in termFrequency)
             {
                 if (!pages.Exists(x => x.HasToken(term.Key)))
@@ -52,6 +54,7 @@ namespace WI120917
                 }
             }
 
+            // Normalizes the index
             double queryVectorLength = Math.Sqrt(queryVector.Sum(wt => wt = Math.Pow(wt, 2)));
             for (int i = 0; i < queryVector.Count; i++)
             {

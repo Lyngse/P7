@@ -13,7 +13,7 @@ namespace WI120917
     //Corners cut: Replacing all - and _ with a whitespace, which can therefore not be recognized as a query in our search.
     //Corners cut: Using HtmlAgilityPack to load the html content of a page.
     //Corners cut: Using HtmlAgilityPack to remove any unwanted tags from the content.
-    class Indexer
+    class Tokenizer
     {
         //Tokenize will add tokens to each webpage one after another.
         public void Tokenize(List<Webpage> htmlPages)

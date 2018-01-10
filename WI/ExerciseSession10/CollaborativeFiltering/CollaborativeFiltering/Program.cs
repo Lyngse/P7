@@ -64,9 +64,9 @@ namespace CollaborativeFiltering
                 double usersRating = 0;
                 for (int j = 0; j < userMovieMatrix.RowCount; j++)
                 {
-                    if (userMovieMatrix[i, j] != 0)
+                    if (userMovieMatrix[j, i] != 0)
                     {
-                        usersRating += userMovieMatrix[i, j];
+                        usersRating += userMovieMatrix[j, i];
                         userCount++;
                     }
                 }
@@ -77,3 +77,4 @@ namespace CollaborativeFiltering
         }
     }
 }
+

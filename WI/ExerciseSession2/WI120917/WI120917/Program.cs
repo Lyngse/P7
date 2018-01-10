@@ -40,8 +40,8 @@ namespace WI120917
                     {
                         _pages = ReadFromBinaryFile<List<Webpage>>(crawlerDataFile);
                     }
-                    Indexer index = new Indexer();
-                    index.Tokenize(_pages);
+                    Tokenizer tokenizer = new Tokenizer();
+                    tokenizer.Tokenize(_pages);
                     WriteToBinaryFile(indexFile, _pages);
                 }
                 else
@@ -67,7 +67,7 @@ namespace WI120917
 
 
             //Performs our Rank Search for the input string, and prints the results.
-            RankSearch ranker = new RankSearch();
+            IndexAndRankSearch ranker = new IndexAndRankSearch();
             var rankResults = ranker.Rank("Nova Scotia", _pages);
             rankResults.Take(10).ToList().ForEach(x => Console.WriteLine(x.Key.Id + " - " + x.Value));
 

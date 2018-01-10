@@ -52,7 +52,7 @@ namespace WI2
             {
                 if (user.GetReview() == "*")
                 {
-                    analyzedUsers.Add(user, "Will not buy product!!");
+                    analyzedUsers.Add(user, "Will not buy product!");
 
                     double averageFriendScore = 0.0;
                     foreach (User friend in user.friends)
@@ -71,14 +71,17 @@ namespace WI2
                             {
                                 averageFriendScore += friend.reviewScore;
                             }                            
-                        }
-                            
+                        }                           
                     }
                     averageFriendScore = averageFriendScore / user.friends.Count;
-                    if (averageFriendScore > 3.0)
+                    if (averageFriendScore > 2.5)
                     {
-                        analyzedUsers[user] = "Will buy product!!";
+                        analyzedUsers[user] = "Will buy product!";
                     }
+                }
+                else
+                {
+                    analyzedUsers[user] = "Will not buy product!";
                 }
             }
 
